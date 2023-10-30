@@ -1,0 +1,30 @@
+packages = []
+version = "0.1.1"
+
+
+[splashscreen]
+autoclose = true
+
+[[interpreters]]
+src = "/packages/pyodide/pyodide.mjs"
+name = "pyo-24.1"
+lang = "python"
+
+[[fetch]]
+from = "http://localhost:8047/web/components"
+files = [
+    "card.py",
+    "form.py",
+    "button.py",
+    "label.py",
+    "input.py",
+    "svg.py",
+    "div.py",
+    "input_form.py",
+    "dropdown.py",
+    "notes.py",
+    "title.py",
+    "side_bar.py",
+    "queries.py",
+    "input_form.py"
+]
