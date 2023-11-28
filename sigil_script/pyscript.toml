@@ -11,20 +11,24 @@ name = "pyo-24.1"
 lang = "python"
 
 [[fetch]]
-from = "http://localhost:8047/web/components"
+from = "http://localhost:8047/web/"
 files = [
-    "card.py",
-    "form.py",
-    "button.py",
-    "label.py",
-    "input.py",
-    "svg.py",
-    "div.py",
-    "input_form.py",
-    "dropdown.py",
-    "notes.py",
-    "title.py",
-    "side_bar.py",
+    "components/card.py",
+    "components/form.py",
+    "components/button.py",
+    "components/label.py",
+    "components/input.py",
+    "components/svg.py",
+    "components/div.py",
+    "components/dropdown.py",
+    "components/notes.py",
+    "components/title.py",
+    "components/side_bar.py",
+    "elements/navbar.py",
+    "elements/color_selector.py",
     "queries.py",
-    "input_form.py"
+    "context.py",
+    "views/gallery_view.py",
+    "views/img_form_view.py",
+    "views/edit.py",
 ]

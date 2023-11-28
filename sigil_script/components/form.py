@@ -1,22 +1,20 @@
-from pyscript import display, document, window
-from pyweb import pydom
+from pyscript import document
 from pyweb.pydom import Element
 
 
 class Form(Element):
     """component builder for the card component."""
-    
+
     _type = "form"
     _class_list: set = {"form"}
 
-
     def __init__(
-        self,
-        parent: Element,
-        id: str = "",
-        *,
-        class_list: set = {},
-        inner_text: str = "",
+            self,
+            parent: Element,
+            id: str = "",
+            *,
+            class_list: set = {},
+            inner_text: str = "",
     ):
         """
         Parameters
@@ -40,9 +38,7 @@ class Form(Element):
             self.add_class(x)
         # ------------------
 
-
     # -------------------------------------------------------------------------
 
     def __create__(self):
         self._parent.append(self)
-

@@ -1,7 +1,5 @@
-from pyscript import display, document, window
-from pyweb import pydom
+from pyscript import document
 from pyweb.pydom import Element
-
 
 
 class Button(Element):
@@ -15,12 +13,12 @@ class Button(Element):
     _class_list: set = {"button", "uk-button"}
 
     def __init__(
-        self,
-        parent: Element,
-        id: str = "",
-        *,
-        class_list: set = {},
-        inner_text: str = "",
+            self,
+            parent: Element,
+            id: str = "",
+            *,
+            class_list: set = {},
+            inner_text: str = "",
     ):
         """
         Parameters
@@ -32,7 +30,7 @@ class Button(Element):
         self._js = document.createElement(self._type)
         self.id: str = id
         cl = self._class_list.union(class_list)
-        self.html = f"{inner_text}"
+        self.html: str = f"{inner_text}"
         # -------------------
         # create element
         # ---
@@ -43,7 +41,6 @@ class Button(Element):
         for x in cl:
             self.add_class(x)
         # ------------------
-
 
     # -------------------------------------------------------------------------
 

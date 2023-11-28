@@ -1,21 +1,20 @@
-from pyscript import display, document, window
-from pyweb import pydom
+from pyscript import document
 from pyweb.pydom import Element
 
 
 class Label(Element):
     """component builder for the card component."""
-    
+
     _type = "label"
     _class_list: set = {"mlabel"}
 
     def __init__(
-        self,
-        parent: Element,
-        id: str = "",
-        *,
-        class_list: set = {},
-        inner_text: str = "",
+            self,
+            parent: Element,
+            id: str = "",
+            *,
+            class_list: set = {},
+            inner_text: str = "",
     ):
         """
         Parameters
@@ -38,7 +37,6 @@ class Label(Element):
         for x in cl:
             self.add_class(x)
         # ------------------
-
 
     # -------------------------------------------------------------------------
 

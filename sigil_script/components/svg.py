@@ -1,5 +1,4 @@
-from pyscript import display, document, window
-from pyweb import pydom
+from pyscript import document
 from pyweb.pydom import Element
 
 
@@ -14,12 +13,12 @@ class SVG(Element):
     _class_list: set = {"svg-container"}
 
     def __init__(
-        self,
-        parent: Element,
-        id: str = "",
-        *,
-        class_list: set = {},
-        svg_image: str = "",
+            self,
+            parent: Element,
+            id: str = "",
+            *,
+            class_list: set = {},
+            svg_image: str = "",
     ):
         """
         Parameters
@@ -42,7 +41,6 @@ class SVG(Element):
         for x in cl:
             self.add_class(x)
         # ------------------
-
 
     # -------------------------------------------------------------------------
 

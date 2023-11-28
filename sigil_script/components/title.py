@@ -1,21 +1,20 @@
-from pyscript import display, document, window
-from pyweb import pydom
+from pyscript import document
 from pyweb.pydom import Element
 
 
 class Title(Element):
     """component builder for the card component."""
-    
+
     _type = "h3"
     _class_list: set = {"title"}
 
     def __init__(
-        self,
-        parent: Element,
-        id: str = "",
-        *,
-        class_list: set = {},
-        inner_text: str = "",
+            self,
+            parent: Element,
+            id: str = "",
+            *,
+            class_list: set = {},
+            inner_text: str = "",
     ):
         """
         Parameters
@@ -39,7 +38,7 @@ class Title(Element):
         for x in cl:
             self.add_class(x)
         # ------------------
-        self.__setattr__("value", self.inner_text)
+        self._js.value = self.inner_text
 
     # -------------------------------------------------------------------------
 

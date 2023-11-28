@@ -1,5 +1,4 @@
-from pyscript import display, document, window
-from pyweb import pydom
+from pyscript import document
 from pyweb.pydom import Element
 
 
@@ -10,13 +9,13 @@ class Notes(Element):
     _class_list: set[str] = {"notes"}
 
     def __init__(
-        self,
-        parent: Element,
-        id: str = "",
-        title: str = "",
-        *,
-        class_list: set = {},
-        inner_text: str = "",
+            self,
+            parent: Element,
+            id: str = "",
+            title: str = "",
+            *,
+            class_list: set = {},
+            inner_text: str = "",
     ):
         """
         Parameters
