@@ -2,15 +2,19 @@
 # libs
 from asyncio import ensure_future
 
-from stubs.pyscript import when
+from pyscript import when
 
 # imports
+from components.div import Div
 from context import site
+
 
 # =======================
 async def main() -> None:
     # ==================================
-    pass
+    div1 = Div(site.body)
+
+    # ==================================
 
 
-
+ensure_future(main())

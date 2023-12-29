@@ -12,16 +12,4 @@ lang = "python"
 
 [[fetch]]
 from = "http://127.0.0.1:8000/"
-files = [
-    "components/card.py",
-    "components/form.py",
-    "components/button.py",
-    "components/label.py",
-    "components/input.py",
-    "components/svg.py",
-    "components/div.py",
-    "components/dropdown.py",
-    "components/notes.py",
-    "components/title.py",
-
-]
+files = ["components/div.py"]

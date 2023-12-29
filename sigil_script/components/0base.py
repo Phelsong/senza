@@ -82,7 +82,7 @@ class Sigil(Element):
             self._js.style.visibility = "hidden"
         self._visible = val
 
-    def __create__(self, class_list):
+    def __create__(self, class_list: set):
         self._parent.append(self)
         cl = self._class_list.union(class_list)
         for x in cl:

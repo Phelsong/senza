@@ -2,8 +2,8 @@ import json
 
 from pyodide.http import pyfetch
 
-# base_url: str = "http://[::1]:8047"
-base_url: str = "http://127.0.0.1:8047"
+# base_url: str = "http://[::1]:8000"
+base_url: str = "http://127.0.0.1:8000"
 
 
 # ----------------------------------------------------------------
