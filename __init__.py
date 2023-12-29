@@ -1,3 +1,3 @@
 """sigil-script lib"""
 
-import sigil_script as sigil_script
+import sigil_script.components as sigil_script

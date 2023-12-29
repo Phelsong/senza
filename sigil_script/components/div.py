@@ -43,19 +43,14 @@ class Div(Element):
         self._parent: Element = parent
         self._js = document.createElement(self._type)
         self.id: str = id
-        cl = self._class_list.union(class_list)
         self.visible = visible
+        self.html = f"{inner_text}"
         # -------------------
         # create element
         # ---
-        self.__create__()
+        self.__create__(class_list)
         # ------------------
-        # must be after creation of element
-        # ---
-        for x in cl:
-            self.add_class(x)
-
-            # ------------------
+        # ------------------
 
         # -------------------------------------------------------------------------
 
@@ -73,5 +68,8 @@ class Div(Element):
             self._js.style.visibility = "hidden"
         self._visible = val
 
-    def __create__(self):
+    def __create__(self, class_list: set):
         self._parent.append(self)
+        cl = self._class_list.union(class_list)
+        for x in cl:
+            self.add_class(x)

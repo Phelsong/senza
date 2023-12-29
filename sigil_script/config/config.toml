@@ -12,4 +12,9 @@ lang = "python"
 
 [[fetch]]
 from = "http://127.0.0.1:8000/"
-files = ["components/div.py"]
+files = [
+    "sigil_script/context.py",
+    "sigil_script/components/abase.py",
+    "sigil_script/components/div.py",
+    "sigil_script/components/button.py",
+]

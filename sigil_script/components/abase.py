@@ -1,6 +1,8 @@
 """base template"""
-from stubs.pyscript import document
-from stubs.pyweb.pydom import Element
+# from stubs.pyscript import document
+# from stubs.pyweb.pydom import Element
+from pyscript import document
+from pyweb.pydom import Element
 
 
 class Sigil(Element):
