@@ -11,7 +11,7 @@ name = "pyo-24.1"
 lang = "python"
 
 [[fetch]]
-from = "http://localhost:8047/web/"
+from = "http://127.0.0.1:8000/"
 files = [
     "components/card.py",
     "components/form.py",
@@ -23,12 +23,5 @@ files = [
     "components/dropdown.py",
     "components/notes.py",
     "components/title.py",
-    "components/side_bar.py",
-    "elements/navbar.py",
-    "elements/color_selector.py",
-    "queries.py",
-    "context.py",
-    "views/gallery_view.py",
-    "views/img_form_view.py",
-    "views/edit.py",
+
 ]

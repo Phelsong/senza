@@ -1,0 +1,3 @@
+from _typeshed import Incomplete
+
+def when(event_type: Incomplete | None = ..., selector: Incomplete | None = ...): ...

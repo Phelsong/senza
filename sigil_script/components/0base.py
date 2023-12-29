@@ -1,10 +1,10 @@
-"""Div wrapper"""
-from pyscript import document
-from pyweb.pydom import Element
+"""base template"""
+from stubs.pyscript import document
+from stubs.pyweb.pydom import Element
 
 
-class Div(Element):
-    """Base component builder for an HTML button component.
+class Sigil(Element):
+    """Base component builder for a HTML component.
     _type: str
     _class_list: set
     _parent: pydom.Element
@@ -38,24 +38,33 @@ class Div(Element):
             The inner text of the component.
         visible: bool
             Whether the component is visible or not.
+
+        Methods
+        -------
+        html: str
+        id: str
+        value: str
+        children: str
+        visible: bool
+        add_class: str
+        remove_class: str
+        classes
+        clone(id: str)
+        show_me
+        content
+        when
         """
 
         self._parent: Element = parent
         self._js = document.createElement(self._type)
-        self.id: str = id
-        cl = self._class_list.union(class_list)
+        self.id = id
+        self.html = f"{inner_text}"
         self.visible = visible
         # -------------------
         # create element
         # ---
-        self.__create__()
+        self.__create__(class_list)
         # ------------------
-        # must be after creation of element
-        # ---
-        for x in cl:
-            self.add_class(x)
-
-            # ------------------
 
         # -------------------------------------------------------------------------
 
@@ -73,5 +82,8 @@ class Div(Element):
             self._js.style.visibility = "hidden"
         self._visible = val
 
-    def __create__(self):
+    def __create__(self, class_list):
         self._parent.append(self)
+        cl = self._class_list.union(class_list)
+        for x in cl:
+            self.add_class(x)

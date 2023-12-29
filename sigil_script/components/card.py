@@ -1,3 +1,4 @@
+""""""
 from pyscript import document
 from pyweb.pydom import Element
 
@@ -6,7 +7,7 @@ class Card(Element):
     """component builder for the card component."""
 
     _type = "div"
-    _class_list: set[str] = {"uk-container", "card"}
+    _class_list: set[str] = {"card"}
 
     def __init__(
             self,

@@ -9,36 +9,42 @@ class Input(Element):
     _class_list: set = {"input"}
 
     def __init__(
-            self,
-            parent: Element,
-            id: str = "",
-            *,
-            class_list: set = {},
-            inner_text: str = "",
+        self,
+        parent: Element,
+        id: str = "",
+        *,
+        class_list: set = {},
+        inner_text: str = "",
     ):
         """
+        Create an input component.
+
         Parameters
         ----------
-        id
-        class_list
+        parent : Element
+            the parent element of the input component
+        id : str, optional
+            the id of the input component, by default ""
+        class_list : set, optional
+            a set of classes to be added to the input component, by default {}
+        inner_text : str, optional
+            the inner text of the input component, by default ""
         """
         self._parent: Element = parent
         self._js = document.createElement(self._type)
-        self.id: str = id
-        cl = self._class_list.union(class_list)
+        self.id = id
+
         self.html = f"{inner_text}"
         # -------------------
         # create element
         # ---
         self.__create__()
         # ------------------
-        # must be after creation of element
-        # ---
-        for x in cl:
-            self.add_class(x)
-        # ------------------
 
     # -------------------------------------------------------------------------
 
     def __create__(self):
         self._parent.append(self)
+        cl = self._class_list.union(class_list)
+        for x in cl:
+            self.add_class(x)

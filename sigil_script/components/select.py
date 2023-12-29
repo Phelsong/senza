@@ -2,20 +2,28 @@ from pyscript import document
 from pyweb.pydom import Element
 
 
-class Notes(Element):
+class Dropdown(Element):
     """component builder for the card component."""
 
-    _type = "div"
-    _class_list: set[str] = {"notes"}
+    _type = "select"
+    _class_list: set[str] = {"uk-select", "dropdown"}
+
+    def __opt_list__(self, opt_list: dict, opt_class: set) -> str:
+        opt_list = ""
+        opt_class = opt_class.add("select-item")
+        for id, val in self.opt_list.items():
+            opt_list += f"<option class={opt_class} id={id} value={val}></option>"
+        return opt_list
 
     def __init__(
-            self,
-            parent: Element,
-            id: str = "",
-            title: str = "",
-            *,
-            class_list: set = {},
-            inner_text: str = "",
+        self,
+        parent: Element,
+        id: str = "",
+        *,
+        class_list: set = {},
+        default_value: str = "",
+        opt_list: dict[str, str] = {},
+        opt_class: set = {},
     ):
         """
         Parameters
@@ -25,17 +33,14 @@ class Notes(Element):
         """
         self._parent: Element = parent
         self._js = document.createElement(self._type)
-        self.id: str = id
+        self.id = id
         cl = self._class_list.union(class_list)
+        self._js.value = default_value
+        # -------------------
+        li_list = self.__opt_list__(opt_list, opt_class)
         self.html = f"""
-        <ul uk-accordion class="accordian">
-        <li class="uk-open accordian-item">
-        <a class="uk-accordion-title" href="#">{title}</a>
-        <div class="uk-accordion-content">
-        <textarea name="Text1" cols="40" rows="5" class="uk-input uk-input-small uk-input-width input notes-input" placeholder="notes"></textarea>
-        </div>
-        </li>
-        </ul>"""
+        {li_list}
+        """
         # -------------------
         # create element
         # ---

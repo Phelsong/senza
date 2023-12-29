@@ -3,7 +3,8 @@ import json
 from pyodide.http import pyfetch
 
 # base_url: str = "http://[::1]:8047"
-base_url: str = "http://localhost:8047"
+base_url: str = "http://127.0.0.1:8047"
+
 
 # ----------------------------------------------------------------
 async def query_ex(url: str) -> dict:
@@ -17,18 +18,17 @@ async def query_ex(url: str) -> dict:
 
 
 # ----------------------------------------------------------------
-async def send_data(data):
+async def send_data(data: dict):
     try:
         response = await pyfetch(
             url=data["callbackUrl"],
             method="POST",
             headers={"Content-type": "application/json"},
             body=json.dumps(data),
-            cors="no-cors",
-            redirect="follow",
         )
     except Exception as e:
         print(e)
+
 
 # ----------------------------------------------------------------
 
