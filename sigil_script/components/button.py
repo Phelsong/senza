@@ -2,6 +2,7 @@
 from pyweb.pydom import Element
 from sigil_script.components.abase import Sigil
 
+
 class Button(Sigil):
     """Base component builder for a HTML component.
     _type: str
