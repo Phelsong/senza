@@ -1,0 +1,39 @@
+packages = []
+version = "0.1.1"
+
+
+[splashscreen]
+autoclose = true
+
+[[interpreters]]
+src = "/packages/pyodide/pyodide.mjs"
+name = "pyo-24.1"
+lang = "python"
+
+[[fetch]]
+from = "http://127.0.0.1:8000/"
+files = [
+    "sigil_script/components/__init__.py",
+    "sigil_script/components/abase.py",
+    "sigil_script/components/div",
+    "sigil_script/components/anchor",
+    "sigil_script/components/button",
+    "sigil_script/components/form",
+    "sigil_script/components/img",
+    "sigil_script/components/input",
+    "sigil_script/components/label",
+    "sigil_script/components/h1",
+    "sigil_script/components/h2",
+    "sigil_script/components/h3",
+    "sigil_script/components/h4",
+    "sigil_script/components/h5",
+    "sigil_script/components/h6",
+    "sigil_script/components/ptag",
+    "sigil_script/components/select",
+    "sigil_script/components/svg",
+    "sigil_script/components/span",
+    "sigil_script/context.py",
+    "sigil_script/dom_router.py",
+    "web/app.py",
+    "web/views/test_page.py",
+]
