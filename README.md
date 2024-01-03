@@ -1,3 +1,3 @@
-# Element Framework for PyScript
+# Senza
 
-* This was ripped out of an active project and is currently being worked on
+**Element Framework for PyScript**
