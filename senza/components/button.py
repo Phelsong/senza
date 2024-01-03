@@ -1,6 +1,6 @@
 """base template"""
 from pyweb.pydom import Element
-from sigil_script.components.abase import Sigil
+from senza.components.abase import Sigil
 
 
 class Button(Sigil):

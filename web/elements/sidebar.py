@@ -1,4 +1,4 @@
-from sigil_script.components.div import Div
+from senza.components.div import Div
 from sigil_script.context import site import site
 
 def sidebar():

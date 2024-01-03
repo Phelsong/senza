@@ -3,7 +3,7 @@
 from pyweb.pydom import Element
 
 # imports
-from sigil_script.context import site
+from senza.context import site
 
 
 class DomRouter:

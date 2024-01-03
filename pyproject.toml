@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "sigil-script"
+name = "senza"
 version = "0.1.5"
 description = "pyscript dom library"
 authors = ["josh wilkinson <josh@joshsw.dev>"]

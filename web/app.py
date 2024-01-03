@@ -3,7 +3,7 @@
 from asyncio import ensure_future
 
 # imports
-from sigil_script.dom_router import dom_router
+from senza.dom_router import dom_router
 from web.views.test_page import test_page
 
 

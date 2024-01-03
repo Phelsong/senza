@@ -1,5 +1,5 @@
 from pyweb.pydom import Element
-from sigil_script.components import Div
+from senza.components import Div
 
 
 async def test_page(parent: Element):

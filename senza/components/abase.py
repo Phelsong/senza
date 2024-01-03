@@ -5,7 +5,7 @@ from pyscript import document
 from pyweb.pydom import Element
 
 
-class Sigil(Element):
+class Senza(Element):
     """Base component builder for a HTML component.
     _type: str
     _class_list: set
