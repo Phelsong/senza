@@ -1,9 +1,9 @@
 """base template"""
 from pyweb.pydom import Element
-from senza.components.abase import Sigil
+from senza.components.abase import Rest
 
 
-class Button(Sigil):
+class Button(Rest):
     """Base component builder for a HTML component.
     _type: str
     _class_list: set
