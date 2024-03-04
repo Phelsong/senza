@@ -1,0 +1,13 @@
+services:
+  joshsw_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: website
+    volumes:
+      - ../:/opt/website
+    ports:
+      - "8062:8062"
+    restart: unless-stopped
+    environment:
+      - SITE_ENV=PRODUCTION
