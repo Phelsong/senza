@@ -1,9 +1,13 @@
 """router"""
+
+# from typing_extensions import dict_keys
+from typing import Callable
+
 # libs
 from pyweb.pydom import Element
 
 # imports
-from senza.context import site
+from web.context import site
 
 
 class DomRouter:
@@ -11,7 +15,7 @@ class DomRouter:
         self.routes: dict = {}
         self.root: Element = root
 
-    async def add_route(self, func: callable, route: str) -> None:
+    async def add_route(self, func: Callable, route: str) -> None:
         self.routes[route] = func
 
     def remove_route(self, route: str) -> None:
@@ -19,7 +23,7 @@ class DomRouter:
 
     def get_routes(self) -> set[str]:
         print(self.routes.keys())
-        return self.routes.keys()
+        return set(self.routes.keys())
 
     async def nav(self, route: str) -> None:
         site.body.html = ""

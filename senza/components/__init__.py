@@ -1,3 +1,4 @@
+from senza.components.abase import Rest
 from senza.components.div import Div
 from senza.components.anchor import Anchor
 from senza.components.button import Button
@@ -17,8 +18,9 @@ from senza.components.h6 import H6
 
 # from senza.components.option import Option
 # from senza.components.pre import Pre
-from senza.components.ptag import Ptag
-from senza.components.select import Select
+from senza.components.ptag import P
+
+# from senza.components.select import Select
 from senza.components.svg import SVG
 
 # from senza.components.small import Small

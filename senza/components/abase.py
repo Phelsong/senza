@@ -3,6 +3,7 @@
 # from stubs.pyscript import document
 # from stubs.pyweb.pydom import Element
 from pyscript import document
+from pyweb import pydom
 from pyweb.pydom import Element
 
 
@@ -22,9 +23,9 @@ class Rest(Element):
     def __init__(
         self,
         parent: Element,
-        id: str = "",
+        id: str,
         *,
-        class_list: set = {},
+        class_list: set = set(),
         inner_text: str = "",
         visible: bool = True,
     ):
@@ -62,11 +63,12 @@ class Rest(Element):
         self._js = document.createElement(self._type)
         self.id = id
         self.html = f"{inner_text}"
-        self.visible = visible
         # -------------------
         # create element
         # ---
         self.__create__(class_list)
+        # after create
+        self.visible = visible
         # ------------------
 
         # -------------------------------------------------------------------------
