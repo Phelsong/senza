@@ -18,7 +18,7 @@ async def query_ex(url: str) -> dict:
 
 
 # ----------------------------------------------------------------
-async def send_data(data: dict):
+async def send_data_ex(data: dict):
     try:
         response = await pyfetch(
             url=data["callbackUrl"],

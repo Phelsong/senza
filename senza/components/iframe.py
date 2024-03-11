@@ -1,8 +1,8 @@
 """base template"""
 from pyweb.pydom import Element
+from senza.components.abase import Rest
 
-
-class Iframe(Element):
+class Iframe(Rest):
 
 
     _type = "iframe"

@@ -1,8 +1,10 @@
 """base template"""
+
 from pyweb.pydom import Element
+from senza.components.abase import Rest
 
 
-class Anchor(Element):
+class A(Rest):
     """Base component builder for a HTML component.
     _type: str
     _class_list: set
