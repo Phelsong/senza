@@ -11,8 +11,8 @@ from web.views.test_page import test_page
 # =======================
 async def main() -> None:
     # ==================================
-    await dom_router.add_route(test_page, "/test")
-    dom_router.get_routes()
+    await dom_router.routes.add(test_page, "/test")
+    dom_router.routes()
     await dom_router.nav("/test")
     # ==================================
 

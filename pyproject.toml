@@ -16,3 +16,7 @@ black = "^23.10.1"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+start = 'main:server.run'
+push_revision = 'utils.push_version:push_revision'
+compile_sass = 'utils.compile_sass:compile_sass'

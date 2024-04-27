@@ -12,22 +12,31 @@ from web.context import site
 
 class DomRouter:
     def __init__(self, root: Element) -> None:
-        self.routes: dict = {}
+        self._nav: dict[str, Callable] = {}
         self.root: Element = root
+        self.routes: set[str] = set()
 
-    async def add_route(self, func: Callable, route: str) -> None:
+    async def remove_route(self, route: str) -> None:
+        self.routes.remove(route)
+        del self.routes[route]
+
+    @property
+    async def routes(self) -> set[str]:
+        return self.routes
+
+    @routes.setter
+    async def routes(self, func: Callable, route: str) -> None:
+        self.routes.add(route)
         self.routes[route] = func
 
-    def remove_route(self, route: str) -> None:
-        self.routes.__delitem__(route)
-
-    def get_routes(self) -> set[str]:
-        print(self.routes.keys())
-        return set(self.routes.keys())
+    @routes.deleter
+    async def routes(self, route: str) -> None:
+        self.routes.remove(route)
+        del self.nav[route]
 
     async def nav(self, route: str) -> None:
         site.body.html = ""
-        await dom_router.routes[route](self.root)
+        await dom_router.nav[route](self.root)
 
 
 dom_router = DomRouter(site.body)
