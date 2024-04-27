@@ -4,7 +4,7 @@ from uvicorn import Server as UV_Server, Config as UV_Config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 # imports
 from routers.nav import nav
@@ -43,12 +43,7 @@ server: UV_Server = UV_Server(server_config)
 
 
 app = FastAPI(root_path=".")
-origins: list[str] = [
-    "http://localhost",
-    "http://127.0.0.1",
-    "http://[::]",
-    "*"
-]
+origins: list[str] = ["http://localhost", "http://127.0.0.1", "http://[::]", "*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -70,11 +65,6 @@ app.mount(
     app=StaticFiles(directory="web"),
     name="web",
 )
-app.mount(
-    path="/assets",
-    app=StaticFiles(directory="assets"),
-    name="assets",
-)
 # ---------------------------------------------------------
 app.include_router(nav)
 # ---------------------------------------------------------
@@ -85,9 +75,33 @@ def get_status() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/favicon.ico")
-def get_favicon() -> FileResponse:
-    return FileResponse(path="public/favicon.ico", status_code=200)
+# @app.get("/favicon.ico")
+# def get_favicon() -> FileResponse:
+#     return FileResponse(path="public/favicon.ico", status_code=200)
+
+
+@app.get("/")
+def get_home() -> HTMLResponse:
+    html: str = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- ============================================================ -->
+    <link defer rel="stylesheet" href="/public/index.css" />
+    <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.4.1/core.css">
+    <script defer type="module" src="https://pyscript.net/releases/2024.4.1/core.js"></script>
+    <!-- ============================================================ -->
+    <title>Pyscript App</title>
+  </head>
+  <body>
+    <!-- ============================================================ -->
+   <script type='py' src='/web/app.py' config='/web/config.toml'></script>
+        </body>
+        </html>
+    """
+    return HTMLResponse(html, status_code=200)
 
 
 # ------------------------------------------------------------------------------

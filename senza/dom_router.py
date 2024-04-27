@@ -11,7 +11,7 @@ from web.context import site
 
 
 class DomRouter:
-    def __init__(self, root: Element) -> None:
+    async def __init__(self, root: Element) -> None:
         self._nav: dict[str, Callable] = {}
         self.root: Element = root
         self.routes: set[str] = set()
