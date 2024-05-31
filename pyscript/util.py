@@ -1,3 +1,16 @@
+# https://github.com/pyscript/pyscript/blob/main/pyscript.core/src/stdlib/pyscript/util.py
+import js
+
+
+def as_bytearray(buffer):
+    ui8a = js.Uint8Array.new(buffer)
+    size = ui8a.length
+    ba = bytearray(size)
+    for i in range(0, size):
+        ba[i] = ui8a[i]
+    return ba
+
+
 class NotSupported:
     """
     Small helper that raises exceptions if you try to get/set any attribute on

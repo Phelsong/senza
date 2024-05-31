@@ -1,6 +1,6 @@
 from senza.components.abase import Rest
 from senza.components.div import Div
-from senza.components.anchor import Anchor
+from senza.components.anchor import A
 from senza.components.button import Button
 
 # from senza.components.code import Code

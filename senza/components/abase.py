@@ -62,7 +62,7 @@ class Rest(Element):
         self._parent: Element = parent
         self._js = document.createElement(self._type)
         self.id = id
-        self.html = f"{inner_text}"
+        self.html = inner_text
         # -------------------
         # create element
         # ---

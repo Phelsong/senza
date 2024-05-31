@@ -1,3 +1,5 @@
+# https://github.com/pyscript/pyscript/blob/main/pyscript.core/src/stdlib/pyscript/__init__.py
+
 # Some notes about the naming conventions and the relationship between various
 # similar-but-different names.
 #
@@ -30,18 +32,24 @@
 #     as it works transparently in both the main thread and worker cases.
 
 from pyscript.display import HTML, display
+from pyscript.fetch import fetch
 from pyscript.magic_js import (
     RUNNING_IN_WORKER,
     PyWorker,
+    config,
     current_target,
     document,
+    js_modules,
     sync,
     window,
 )
+from pyscript.websocket import WebSocket
 
 try:
     from pyscript.event_handling import when
 except:
+    # TODO: should we remove this? Or at the very least, we should capture
+    # the traceback otherwise it's very hard to debug
     from pyscript.util import NotSupported
 
     when = NotSupported(

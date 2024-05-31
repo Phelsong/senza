@@ -5,9 +5,9 @@ description = "pyscript dom library"
 authors = ["josh wilkinson <josh@joshsw.dev>"]
 readme = "README.md"
 
-
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
+websockets = "^12.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.10.1"

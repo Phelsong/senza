@@ -11,32 +11,32 @@ from web.context import site
 
 
 class DomRouter:
-    async def __init__(self, root: Element) -> None:
-        self._nav: dict[str, Callable] = {}
+    def __init__(self, root: Element) -> None:
         self.root: Element = root
-        self.routes: set[str] = set()
-
-    async def remove_route(self, route: str) -> None:
-        self.routes.remove(route)
-        del self.routes[route]
+        self._nav: dict[str, Callable] = {}
+        self._routes: set[str] = set()
 
     @property
     async def routes(self) -> set[str]:
-        return self.routes
+        return self._routes
 
-    @routes.setter
-    async def routes(self, func: Callable, route: str) -> None:
-        self.routes.add(route)
-        self.routes[route] = func
+    async def add(self, func: Callable, route: str = "{/func.__name__}") -> None:
+        #
+        if route == "{/func.__name__}":
+            route = f"/{func.__name__}"
+        if route[0] != "/":
+            route = f"/{route}"
+        #
+        self._routes.add(route)
+        self._nav[f"/{func.__name__}"] = func
 
-    @routes.deleter
-    async def routes(self, route: str) -> None:
-        self.routes.remove(route)
-        del self.nav[route]
+    async def remove(self, route: str) -> None:
+        self._routes.remove(route)
+        del self._nav[route]
 
     async def nav(self, route: str) -> None:
         site.body.html = ""
-        await dom_router.nav[route](self.root)
+        await self._nav[route](self.root)
 
 
 dom_router = DomRouter(site.body)

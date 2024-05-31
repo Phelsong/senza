@@ -1,6 +1,0 @@
-from _typeshed import Incomplete
-
-class HTML:
-    def __init__(self, html) -> None: ...
-
-def display(*values, target: Incomplete | None = ..., append: bool = ...) -> None: ...

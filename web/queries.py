@@ -1,6 +1,5 @@
 import json
-
-from pyodide.http import pyfetch
+from pyscript import fetch
 
 # base_url: str = "http://[::1]:8000"
 base_url: str = "http://127.0.0.1:8000"
@@ -9,9 +8,8 @@ base_url: str = "http://127.0.0.1:8000"
 # ----------------------------------------------------------------
 async def query_ex(url: str) -> dict:
     try:
-        response: str = await pyfetch(url)
-        result: dict = await response.json()
-        return result
+        response: dict = await fetch(url).json()
+        return response
     except Exception as e:
         result: dict = {"error": str(e)}
         return result
@@ -20,7 +18,7 @@ async def query_ex(url: str) -> dict:
 # ----------------------------------------------------------------
 async def send_data_ex(data: dict):
     try:
-        response = await pyfetch(
+        response = await fetch(
             url=data["callbackUrl"],
             method="POST",
             headers={"Content-type": "application/json"},

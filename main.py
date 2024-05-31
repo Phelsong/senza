@@ -1,13 +1,15 @@
 # libs
 import os
 from uvicorn import Server as UV_Server, Config as UV_Config
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import HTMLResponse
 
 # imports
 from routers.nav import nav
+
+# from fast_socket import websocket_endpoint
 
 
 # =============================================================================
@@ -22,7 +24,6 @@ if os.environ.get("SITE_ENV") == "PRODUCTION":
         root_path=".",
         workers=5,
         log_level="info",
-        forwarded_allow_ips="*",
     )
 else:
     server_config = UV_Config(
@@ -30,14 +31,11 @@ else:
         host="0.0.0.0",
         port=8062,
         root_path=".",
-        log_level="info",
+        log_level="debug",
         workers=5,
         ssl_certfile="./certs/dev-cert.pem",
         ssl_keyfile="./certs/dev-key.pem",
     )
-
-
-# print(server_config.__dict__)
 
 server: UV_Server = UV_Server(server_config)
 
@@ -90,8 +88,8 @@ def get_home() -> HTMLResponse:
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- ============================================================ -->
     <link defer rel="stylesheet" href="/public/index.css" />
-    <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.4.1/core.css">
-    <script defer type="module" src="https://pyscript.net/releases/2024.4.1/core.js"></script>
+    <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.5.2/core.css">
+    <script defer type="module" src="https://pyscript.net/releases/2024.5.2/core.js"></script>
     <!-- ============================================================ -->
     <title>Pyscript App</title>
   </head>
@@ -105,6 +103,14 @@ def get_home() -> HTMLResponse:
 
 
 # ------------------------------------------------------------------------------
+
+
+@app.websocket("/ws")
+async def websocket_text(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"Message: {data}")
 
 
 if __name__ == "__main__":

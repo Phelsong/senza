@@ -7,33 +7,34 @@ autoclose = true
 
 [[interpreters]]
 src = "/packages/pyodide/pyodide.mjs"
-name = "pyo-24.1"
+name = "pyo"
 lang = "python"
 
 [[fetch]]
-from = "http://127.0.0.1:8000/"
+from = "https://local.dev:8062/"
 files = [
     "senza/components/__init__.py",
     "senza/components/abase.py",
-    "senza/components/div",
-    "senza/components/anchor",
-    "senza/components/button",
-    "senza/components/form",
-    "senza/components/img",
-    "senza/components/input",
-    "senza/components/label",
-    "senza/components/h1",
-    "senza/components/h2",
-    "senza/components/h3",
-    "senza/components/h4",
-    "senza/components/h5",
-    "senza/components/h6",
-    "senza/components/ptag",
-    "senza/components/select",
-    "senza/components/svg",
-    "senza/components/span",
-    "senza/context.py",
+    "senza/components/div.py",
+    "senza/components/anchor.py",
+    "senza/components/button.py",
+    "senza/components/form.py",
+    "senza/components/img.py",
+    "senza/components/input.py",
+    "senza/components/label.py",
+    "senza/components/h1.py",
+    "senza/components/h2.py",
+    "senza/components/h3.py",
+    "senza/components/h4.py",
+    "senza/components/h5.py",
+    "senza/components/h6.py",
+    "senza/components/ptag.py",
+    "senza/components/select.py",
+    "senza/components/svg.py",
+    "senza/components/span.py",
     "senza/dom_router.py",
+    "senza/websocket.py",
+    "web/context.py",
     "web/app.py",
     "web/views/test_page.py",
 ]
