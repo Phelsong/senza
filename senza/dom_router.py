@@ -28,7 +28,7 @@ class DomRouter:
             route = f"/{route}"
         #
         self._routes.add(route)
-        self._nav[f"/{func.__name__}"] = func
+        self._nav[route] = func
 
     async def remove(self, route: str) -> None:
         self._routes.remove(route)
