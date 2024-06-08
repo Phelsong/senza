@@ -1,8 +1,10 @@
 import js
 import json
 
-# from asyncio import run
+from asyncio import sleep
 from typing import AsyncIterator
+from functools import lru_cache
+
 
 code = 1000
 protocols = "protocols"
@@ -24,7 +26,6 @@ class SWS:
         self._ws.onopen = self.on_open
         self._ws.onclose = self.on_close
         self._ws.onerror = self.on_error
-        
 
     def __getattr__(self, attr):
         return getattr(self._ws, attr)
@@ -38,11 +39,13 @@ class SWS:
     async def close(self, reason: str | None = None, code: int = 1000):
         self._ws.close(code, reason)
 
-    async def receive(self, message) -> None:
+    async def receive(self, event, message) -> None:
         self._messages.append(message)
 
     # ------------------------------------
+
     @property
+    @lru_cache(maxsize=1)
     def state(self):
         return self._state
 
@@ -60,7 +63,7 @@ class SWS:
 
     async def on_message(self, event):
         try:
-            print(event.type, event.data)
+            print("event: ", event.type, event.data)
             await self.receive(event.type, event.data)
         except Exception as err:
             print(err)
@@ -70,12 +73,12 @@ class SWS:
             print(event.type)
         except Exception as err:
             print(err)
-    
+
     async def on_error(self, event):
         try:
             print(event.type)
         except Exception as err:
-            print(err) 
+            print(err)
 
     # ------------------------------------
 
@@ -110,17 +113,44 @@ class SWS:
 
     async def receive_text(self) -> str:
         try:
+            assert len(self._messages)
+        except AssertionError:
+            await sleep(0.1)
+            return await self.receive_text()
+        try:
+            assert type(self._messages[-1]) == str
+        except AssertionError:
+            return "type error"
+        except IndexError as err:
+            await sleep(0.1)
+            return await self.receive_text()
+        finally:
             return self._messages.pop()
-        except Exception as err:
-            print(err)
-            return "error"
 
     async def iter_text(self) -> AsyncIterator:
         try:
             while True:
                 yield await self.receive_text()
         except Exception as err:
-            print(err)
+            print("iter_text: ", err)
+
+    # ---
+
+    async def receive_json(self) -> str:
+        try:
+            assert len(self._messages)
+        except AssertionError:
+            await sleep(0.1)
+            return await self.receive_json()
+        try:
+            assert type(self._messages[-1]) == dict
+        except AssertionError:
+            return "type error"
+        except IndexError as err:
+            await sleep(0.1)
+            return await self.receive_json()
+        finally:
+            return self._messages.pop()
 
     async def iter_json(self) -> AsyncIterator:
         try:
@@ -128,6 +158,24 @@ class SWS:
                 yield await self.receive_json()
         except Exception as err:
             print(err)
+
+    # ---
+
+    async def receive_bytes(self) -> str:
+        try:
+            assert len(self._messages)
+        except AssertionError:
+            await sleep(0.1)
+            return await self.receive_bytes()
+        try:
+            assert type(self._messages[-1]) == bytes
+        except AssertionError:
+            return "type error"
+        except IndexError as err:
+            await sleep(0.1)
+            return await self.receive_bytes()
+        finally:
+            return self._messages.pop()
 
     async def iter_bytes(self) -> AsyncIterator:
         try:

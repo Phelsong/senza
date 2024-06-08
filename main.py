@@ -109,8 +109,14 @@ def get_home() -> HTMLResponse:
 async def websocket_text(websocket: WebSocket):
     await websocket.accept()
     while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(f"Message: {data}")
+        # data = await websocket.receive_text()
+        # await websocket.send_text(data)
+        #
+        # data = await websocket.receive_json()
+        # await websocket.send_json(data)
+        #
+        data = await websocket.receive_bytes()
+        await websocket.send_bytes(data)
 
 
 if __name__ == "__main__":
