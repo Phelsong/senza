@@ -1,5 +1,3 @@
-# https://github.com/pyscript/pyscript/blob/main/pyscript.core/src/stdlib/pyweb/media.py
-
 from pyodide.ffi import to_js
 from pyscript import window
 

@@ -1,5 +1,5 @@
 from pyscript import when
-from pyweb.pydom import Element
+from pyscript.web.elements import Element
 from senza.components import Div, Button
 from senza.websocket import SWS
 

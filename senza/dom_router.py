@@ -4,7 +4,7 @@
 from typing import Callable
 
 # libs
-from pyweb.pydom import Element
+from pyscript.web.elements import Element
 
 # imports
 from web.context import site

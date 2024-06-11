@@ -1,5 +1,5 @@
 from pyscript import document
-from pyweb.pydom import Element
+from pyscript.web.elements import Element
 from senza.components.abase import Rest
 
 class Dropdown(Element):

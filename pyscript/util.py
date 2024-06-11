@@ -1,4 +1,3 @@
-# https://github.com/pyscript/pyscript/blob/main/pyscript.core/src/stdlib/pyscript/util.py
 import js
 
 

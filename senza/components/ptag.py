@@ -1,6 +1,6 @@
 """P tag wrapper"""
 
-from pyweb.pydom import Element
+from pyscript.web.elements import Element
 from senza.components import Rest
 
 

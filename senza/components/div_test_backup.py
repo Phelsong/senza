@@ -1,6 +1,6 @@
 """Div wrapper"""
 from pyscript import document
-from pyweb.pydom import Element
+from pyscript.web.elements import Element
 
 
 class Div(Element):

@@ -1,5 +1,5 @@
 from pyscript import document
-from pyweb.pydom import Element
+from pyscript.web.elements import Element
 
 
 class Input(Element):

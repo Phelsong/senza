@@ -3,8 +3,8 @@
 # from stubs.pyscript import document
 # from stubs.pyweb.pydom import Element
 from pyscript import document
-from pyweb import pydom
-from pyweb.pydom import Element
+from pyscript.web import dom
+from pyscript.web.elements import Element
 
 
 class Rest(Element):
@@ -82,9 +82,9 @@ class Rest(Element):
     def visible(self, val: bool) -> bool:
         """Set the visibility of the element."""
         if val is True:
-            pydom[f"#{self.id}"][0].remove_class("senza-hidden")
+            dom[f"#{self.id}"][0].remove_class("senza-hidden")
         else:
-            pydom[f"#{self.id}"][0].add_class("senza-hidden")
+            dom[f"#{self.id}"][0].add_class("senza-hidden")
         self._visible = val
 
     def __create__(self, class_list: set):

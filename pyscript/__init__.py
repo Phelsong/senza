@@ -1,5 +1,3 @@
-# https://github.com/pyscript/pyscript/blob/main/pyscript.core/src/stdlib/pyscript/__init__.py
-
 # Some notes about the naming conventions and the relationship between various
 # similar-but-different names.
 #
@@ -31,6 +29,7 @@
 #     pyscript.magic_js. This is the blessed way to access them from pyscript,
 #     as it works transparently in both the main thread and worker cases.
 
+from polyscript import lazy_py_modules as py_import
 from pyscript.display import HTML, display
 from pyscript.fetch import fetch
 from pyscript.magic_js import (
@@ -39,6 +38,7 @@ from pyscript.magic_js import (
     config,
     current_target,
     document,
+    js_import,
     js_modules,
     sync,
     window,

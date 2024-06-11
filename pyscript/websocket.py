@@ -1,4 +1,3 @@
-# https://github.com/pyscript/pyscript/blob/main/pyscript.core/src/stdlib/pyscript/websocket.py
 import js
 from pyscript.util import as_bytearray
 

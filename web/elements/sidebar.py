@@ -1,6 +1,6 @@
 from senza.components.div import Div
-from sigil_script.context import site import site
+from senza.context import site
+
 
 def sidebar():
     sidebar_container = Div(site.body)
-    

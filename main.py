@@ -88,8 +88,8 @@ def get_home() -> HTMLResponse:
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- ============================================================ -->
     <link defer rel="stylesheet" href="/public/index.css" />
-    <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.5.2/core.css">
-    <script defer type="module" src="https://pyscript.net/releases/2024.5.2/core.js"></script>
+    <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.6.1/core.css">
+    <script defer type="module" src="https://pyscript.net/releases/2024.6.1/core.js"></script>
     <!-- ============================================================ -->
     <title>Pyscript App</title>
   </head>

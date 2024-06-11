@@ -40,11 +40,11 @@ async def dashboard() -> HTMLResponse:
     <!-- ================================================================================== -->
     <link
       rel="stylesheet"
-      href="https://pyscript.net/releases/2024.2.1/core.css"
+      href="https://pyscript.net/releases/2024.6.1/core.css"
     />
     <script
       type="module"
-      src="https://pyscript.net/releases/2024.2.1/core.js"
+      src="https://pyscript.net/releases/2024.6.1/core.js"
     ></script>
     <link rel="stylesheet" href="/public/index.css" />
     <!-- ================================================================================== -->
