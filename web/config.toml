@@ -1,14 +1,10 @@
 packages = []
 version = "0.1.1"
+interpreter = "https://cdn.jsdelivr.net/pyodide/dev/full/pyodide.mjs"
 
 
 [splashscreen]
 autoclose = true
-
-[[interpreters]]
-src = "/packages/pyodide/pyodide.mjs"
-name = "pyo"
-lang = "python"
 
 [[fetch]]
 from = "https://local.dev:8062/"

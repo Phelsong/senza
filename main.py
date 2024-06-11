@@ -89,7 +89,7 @@ def get_home() -> HTMLResponse:
     <!-- ============================================================ -->
     <link defer rel="stylesheet" href="/public/index.css" />
     <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.6.1/core.css">
-    <script defer type="module" src="https://pyscript.net/releases/2024.6.1/core.js"></script>
+    <script defer type="module" src="/public/pyscript/core.js"></script>
     <!-- ============================================================ -->
     <title>Pyscript App</title>
   </head>

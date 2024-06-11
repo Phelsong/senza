@@ -7,6 +7,6 @@ def compile_sass():
         [
             "sass",
             f"{project_root}/sass/index.sass",
-            f"{project_root}/static/index.css",
+            f"{project_root}/public/index.css",
         ]
     )
