@@ -1,4 +1,0 @@
-[submodule "pyscript"]
-	path = build/pyscript
-	url = https://github.com/pyscript/pyscript.git
-	branch = main
