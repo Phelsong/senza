@@ -16,6 +16,8 @@ senza is a lightweight wrapper around the dom api already offered with pyscript,
     - end-to-end type annotations 
     - a lightweight DOM router, for quickly building page navigation 
     - a more through websocket implementation 
+    - web compiler/minifier [wip]
+    - more to come 
 
 ## How to use
 At the project root 
