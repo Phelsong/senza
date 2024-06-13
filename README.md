@@ -5,6 +5,7 @@
 ## IMPORTANT!
 I have broken the orginal project up, so the core senza library is more modular and could be more easily used across frameworks. 
 The orginal fastapi starter project is now senza-fastapi. 
+https://github.com/Phelsong/senza-fastapi 
 
 This repo meant to run as a (sub)module 
 
