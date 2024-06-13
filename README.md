@@ -12,12 +12,12 @@ This repo meant to run as a (sub)module
 ## What is Senza?
 
 senza is a lightweight wrapper around the dom api already offered with pyscript, with a few added features, namely: 
-    - more composable ui elements 
-    - end-to-end type annotations 
-    - a lightweight DOM router, for quickly building page navigation 
-    - a more through websocket implementation 
-    - web compiler/minifier [wip]
-    - more to come 
+- more composable ui elements 
+- end-to-end type annotations 
+- a lightweight DOM router, for quickly building page navigation 
+- a more through websocket implementation 
+- web compiler/minifier [wip]
+- more to come 
 
 ## How to use
 At the project root 
