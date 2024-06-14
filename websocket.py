@@ -1,4 +1,6 @@
 import js
+from js import Blob
+from pyodide.ffi import JsProxy
 import json
 import orjson
 
@@ -22,12 +24,6 @@ class SenzaSocket:
         self._ws.onopen = self.on_open
         self._ws.onclose = self.on_close
         self._ws.onerror = self.on_error
-
-    def __getattr__(self, attr) -> str:
-        return getattr(self._ws, attr)
-
-    def __setattr__(self, attr, value) -> None:
-        self._ws[attr] = value
 
     async def aconnect(self):
         try:
@@ -118,16 +114,16 @@ class SenzaSocket:
         try:
             assert len(self._messages)
         except AssertionError:
-            await sleep(0.01)
-            return await self.receive_text()
+            await sleep(0.05)
+            await self.receive_text()
         try:
             assert type(self._messages[-1]) is str
             return self._messages.pop()
         except AssertionError:
             return "type error"
         except IndexError as err:
-            await sleep(0.01)
-            return await self.receive_text()
+            await sleep(0.05)
+            await self.receive_text()
 
     async def iter_text(self) -> AsyncIterator[str]:
         try:
@@ -138,22 +134,22 @@ class SenzaSocket:
 
     # ---
 
-    async def receive_json(self) -> list[Any] | dict[Any, Any]:
+    async def receive_json(self) -> list[Any] | dict[Any, Any] | None:
         try:
             assert len(self._messages)
         except AssertionError:
-            await sleep(0.01)
-            return await self.receive_json()
+            await sleep(0.05)
+            await self.receive_json()
         try:
             mess = orjson.loads(self._messages[-1])
             assert type(mess) is dict or type(mess) is list
             self._messages.pop()
             return mess
         except AssertionError:
-            return f"type error {type(self._messages[-1])}"
+            print(f"type error {type(self._messages[-1])}")
         except IndexError as err:
-            await sleep(0.01)
-            return await self.receive_json()
+            await sleep(0.05)
+            await self.receive_json()
         except Exception as err:
             print(err)
 
@@ -170,20 +166,21 @@ class SenzaSocket:
         try:
             assert len(self._messages)
         except AssertionError:
-            await sleep(0.01)
-            return await self.receive_bytes()
+            await sleep(0.05)
+            await self.receive_bytes()
         try:
-            assert type(self._messages[-1]) == bytes
+            # assert type(self._messages[-1]) == object
             return self._messages.pop()
         except AssertionError:
+            print("assert error", str(self._messages[-1]))
             print(f"type error, receive is {type(self._messages[-1])}")
         except IndexError as err:
-            await sleep(0.01)
-            return await self.receive_bytes()
+            await sleep(0.05)
+            await self.receive_bytes()
 
-    async def iter_bytes(self) -> AsyncIterator[bytes]:
+    async def iter_bytes(self) -> AsyncIterator:
         try:
             while True:
                 yield await self.receive_bytes()
         except Exception as err:
-            print(err)
+            print("iter ", err)
