@@ -115,14 +115,14 @@ class SWS:
         try:
             assert len(self._messages)
         except AssertionError:
-            await sleep(0.1)
+            await sleep(0.01)
             return await self.receive_text()
         try:
             assert type(self._messages[-1]) == str
         except AssertionError:
             return "type error"
         except IndexError as err:
-            await sleep(0.1)
+            await sleep(0.01)
             return await self.receive_text()
         finally:
             return self._messages.pop()
@@ -140,14 +140,14 @@ class SWS:
         try:
             assert len(self._messages)
         except AssertionError:
-            await sleep(0.1)
+            await sleep(0.01)
             return await self.receive_json()
         try:
             assert type(self._messages[-1]) == dict
         except AssertionError:
             return "type error"
         except IndexError as err:
-            await sleep(0.1)
+            await sleep(0.01)
             return await self.receive_json()
         finally:
             return self._messages.pop()
@@ -165,14 +165,14 @@ class SWS:
         try:
             assert len(self._messages)
         except AssertionError:
-            await sleep(0.1)
+            await sleep(0.01)
             return await self.receive_bytes()
         try:
             assert type(self._messages[-1]) == bytes
         except AssertionError:
             return "type error"
         except IndexError as err:
-            await sleep(0.1)
+            await sleep(0.01)
             return await self.receive_bytes()
         finally:
             return self._messages.pop()
