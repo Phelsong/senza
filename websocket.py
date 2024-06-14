@@ -1,22 +1,18 @@
 import js
 import json
+import orjson
 
 from asyncio import sleep
-from typing import AsyncIterator
+from typing import AsyncIterator, Callable, Union, Any
 from functools import lru_cache
 
 
-code = 1000
-protocols = "protocols"
-reason = "reason"
+class SenzaSocket:
 
-
-class SWS:
-
-    CONNECTING = 0
-    CONNECTED = 1
-    DISCONNECTED = 2
-    RESPONSE = 3
+    CONNECTING: int = 0
+    CONNECTED: int = 1
+    CLOSING: int = 2
+    CLOSED: int = 3
 
     def __init__(self, url: str):
         self._state = self.CONNECTING
@@ -27,17 +23,24 @@ class SWS:
         self._ws.onclose = self.on_close
         self._ws.onerror = self.on_error
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr) -> str:
         return getattr(self._ws, attr)
 
-    # def __setattr__(self, attr, value):
-    #     if attr == "onmessage":
-    #         self._ws[attr] = lambda e: value(EventMessage(e))
-    #     else:
-    #         self._ws[attr] = value
+    def __setattr__(self, attr, value) -> None:
+        self._ws[attr] = value
 
-    async def close(self, reason: str | None = None, code: int = 1000):
+    async def aconnect(self):
+        try:
+            assert self._ws.readyState == self.CONNECTED
+            self.state = self.CONNECTED
+            return True
+        except AssertionError:
+            await sleep(0.001)
+            await self.aconnect()
+
+    async def close(self, code: int = 1000, reason: str = "n/a") -> None:
         self._ws.close(code, reason)
+        self.state = self.CLOSING
 
     async def receive(self, event, message) -> None:
         self._messages.append(message)
@@ -46,35 +49,35 @@ class SWS:
 
     @property
     @lru_cache(maxsize=1)
-    def state(self):
+    def state(self) -> int:
         return self._state
 
     @state.setter
-    def set_state(self, status: int):
+    def state(self, status: int) -> None:
         self._state = status
 
     # -------------------------------------
 
-    async def on_open(self, event):
+    async def on_open(self, event) -> None:
         try:
             print(event.type)
+            self.state = self.CONNECTED
         except Exception as err:
             print(err)
 
-    async def on_message(self, event):
+    async def on_message(self, event) -> None:
         try:
-            print("event: ", event.type, event.data)
             await self.receive(event.type, event.data)
         except Exception as err:
             print(err)
 
-    async def on_close(self, event):
+    async def on_close(self, event) -> None:
         try:
             print(event.type)
         except Exception as err:
             print(err)
 
-    async def on_error(self, event):
+    async def on_error(self, event) -> None:
         try:
             print(event.type)
         except Exception as err:
@@ -82,7 +85,7 @@ class SWS:
 
     # ------------------------------------
 
-    async def send_text(self, text: str):
+    async def send_text(self, text: str) -> None:
         try:
             if isinstance(text, str):
                 self._ws.send(text)
@@ -91,7 +94,7 @@ class SWS:
         except TypeError as err:
             print(err)
 
-    async def send_json(self, data: dict):
+    async def send_json(self, data: dict) -> None:
         try:
             if isinstance(data, dict):
                 self._ws.send(json.dumps(data))
@@ -118,16 +121,15 @@ class SWS:
             await sleep(0.01)
             return await self.receive_text()
         try:
-            assert type(self._messages[-1]) == str
+            assert type(self._messages[-1]) is str
+            return self._messages.pop()
         except AssertionError:
             return "type error"
         except IndexError as err:
             await sleep(0.01)
             return await self.receive_text()
-        finally:
-            return self._messages.pop()
 
-    async def iter_text(self) -> AsyncIterator:
+    async def iter_text(self) -> AsyncIterator[str]:
         try:
             while True:
                 yield await self.receive_text()
@@ -136,23 +138,26 @@ class SWS:
 
     # ---
 
-    async def receive_json(self) -> str:
+    async def receive_json(self) -> list[Any] | dict[Any, Any]:
         try:
             assert len(self._messages)
         except AssertionError:
             await sleep(0.01)
             return await self.receive_json()
         try:
-            assert type(self._messages[-1]) == dict
+            mess = orjson.loads(self._messages[-1])
+            assert type(mess) is dict or type(mess) is list
+            self._messages.pop()
+            return mess
         except AssertionError:
-            return "type error"
+            return f"type error {type(self._messages[-1])}"
         except IndexError as err:
             await sleep(0.01)
             return await self.receive_json()
-        finally:
-            return self._messages.pop()
+        except Exception as err:
+            print(err)
 
-    async def iter_json(self) -> AsyncIterator:
+    async def iter_json(self) -> AsyncIterator[dict[Any, Any] | list[dict[Any, Any]]]:
         try:
             while True:
                 yield await self.receive_json()
@@ -161,7 +166,7 @@ class SWS:
 
     # ---
 
-    async def receive_bytes(self) -> str:
+    async def receive_bytes(self) -> bytes | None:
         try:
             assert len(self._messages)
         except AssertionError:
@@ -169,15 +174,14 @@ class SWS:
             return await self.receive_bytes()
         try:
             assert type(self._messages[-1]) == bytes
+            return self._messages.pop()
         except AssertionError:
-            return "type error"
+            print(f"type error, receive is {type(self._messages[-1])}")
         except IndexError as err:
             await sleep(0.01)
             return await self.receive_bytes()
-        finally:
-            return self._messages.pop()
 
-    async def iter_bytes(self) -> AsyncIterator:
+    async def iter_bytes(self) -> AsyncIterator[bytes]:
         try:
             while True:
                 yield await self.receive_bytes()
