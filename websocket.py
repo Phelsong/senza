@@ -5,12 +5,26 @@ import json
 import orjson
 
 from asyncio import sleep
+<<<<<<< Updated upstream
 from typing import AsyncIterator, Callable, Union, Any
 from functools import lru_cache
 
 
 class SenzaSocket:
 
+=======
+from typing import AsyncIterator, Callable, Union
+from functools import lru_cache
+
+
+# code = 1000
+# protocols = "protocols"
+# reason = "reason"
+
+
+class senza_socket:
+
+>>>>>>> Stashed changes
     CONNECTING: int = 0
     CONNECTED: int = 1
     CLOSING: int = 2
@@ -34,6 +48,24 @@ class SenzaSocket:
             await sleep(0.001)
             await self.aconnect()
 
+<<<<<<< Updated upstream
+=======
+    # def __setattr__(self, attr, value):
+    #     if attr == "onmessage":
+    #         self._ws[attr] = lambda e: value(EventMessage(e))
+    #     else:
+    #         self._ws[attr] = value
+
+    async def aconnect(self):
+        try:
+            assert self._ws.readyState == self.CONNECTED
+            self.state = self.CONNECTED
+            return True
+        except AssertionError:
+            await sleep(0.001)
+            await self.aconnect()
+
+>>>>>>> Stashed changes
     async def close(self, code: int = 1000, reason: str = "n/a") -> None:
         self._ws.close(code, reason)
         self.state = self.CLOSING
@@ -122,8 +154,13 @@ class SenzaSocket:
         except AssertionError:
             return "type error"
         except IndexError as err:
+<<<<<<< Updated upstream
             await sleep(0.05)
             await self.receive_text()
+=======
+            await sleep(0.01)
+            return await self.receive_text()
+>>>>>>> Stashed changes
 
     async def iter_text(self) -> AsyncIterator[str]:
         try:
@@ -141,17 +178,27 @@ class SenzaSocket:
             await sleep(0.05)
             await self.receive_json()
         try:
+<<<<<<< Updated upstream
             mess = orjson.loads(self._messages[-1])
             assert type(mess) is dict or type(mess) is list
             self._messages.pop()
             return mess
+=======
+            assert type(self._messages[-1]) == dict
+            return json.loads(self._messages.pop())
+>>>>>>> Stashed changes
         except AssertionError:
             print(f"type error {type(self._messages[-1])}")
         except IndexError as err:
+<<<<<<< Updated upstream
             await sleep(0.05)
             await self.receive_json()
         except Exception as err:
             print(err)
+=======
+            await sleep(0.01)
+            return await self.receive_json()
+>>>>>>> Stashed changes
 
     async def iter_json(self) -> AsyncIterator[dict[Any, Any] | list[dict[Any, Any]]]:
         try:
