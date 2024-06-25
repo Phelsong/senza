@@ -38,22 +38,8 @@ class SenzaSocket:
             await sleep(0.001)
             await self.aconnect()
 
-    # def __setattr__(self, attr, value):
-    #     if attr == "onmessage":
-    #         self._ws[attr] = lambda e: value(EventMessage(e))
-    #     else:
-    #         self._ws[attr] = value
 
-    async def aconnect(self):
-        try:
-            assert self._ws.readyState == self.CONNECTED
-            self.state = self.CONNECTED
-            return True
-        except AssertionError:
-            await sleep(0.001)
-            await self.aconnect()
-
-    async def close(self, code: int = 1000, reason: str = "n/a") -> None:
+    async def close(self, code: int = 1000, reason: str | None = None) -> None:
         self._ws.close(code, reason)
         self.state = self.CLOSING
 
@@ -133,7 +119,7 @@ class SenzaSocket:
             assert len(self._messages)
         except AssertionError:
             await sleep(0.05)
-            await self.receive_text()
+            return await self.receive_text()
         try:
             assert type(self._messages[-1]) is str
             return self._messages.pop()
@@ -141,7 +127,7 @@ class SenzaSocket:
             return "type error"
         except IndexError as err:
             await sleep(0.05)
-            await self.receive_text()
+            return await self.receive_text()
 
 
     async def iter_text(self) -> AsyncIterator[str]:
@@ -151,14 +137,14 @@ class SenzaSocket:
         except Exception as err:
             print("iter_text: ", err)
 
-    # ---
+    # ----------------------------------
 
     async def receive_json(self) -> list[Any] | dict[Any, Any] | None:
         try:
             assert len(self._messages)
         except AssertionError:
             await sleep(0.05)
-            await self.receive_json()
+            return await self.receive_json()
         try:
             mess = orjson.loads(self._messages[-1])
             assert type(mess) is dict or type(mess) is list
@@ -168,7 +154,7 @@ class SenzaSocket:
             print(f"type error {type(self._messages[-1])}")
         except IndexError as err:
             await sleep(0.05)
-            await self.receive_json()
+            return await self.receive_json()
         except Exception as err:
             print(err)
 
