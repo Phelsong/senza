@@ -1,6 +1,7 @@
 import js
 import json
 import orjson
+import sys
 
 from asyncio import sleep
 from typing import AsyncIterator, Callable, Union, Any
@@ -28,14 +29,27 @@ class SenzaSocket:
         self._ws.onopen = self.on_open
         self._ws.onclose = self.on_close
         self._ws.onerror = self.on_error
+        self._recurse_limit=sys.getrecursionlimit()
 
     async def aconnect(self):
+        depth:int = 1
         try:
             assert self._ws.readyState == self.CONNECTED
             self.state = self.CONNECTED
             return True
         except AssertionError:
-            await sleep(0.001)
+            if depth < 100:
+                await sleep(0.005)
+            if depth > 100:
+                await sleep(0.01)
+            if depth > 350:
+                await sleep(0.04)
+            if depth > 600:
+                await sleep(0.1)
+            if depth > 900:
+                await sleep(0.5)
+            if depth == self._recurse_limit:
+                return None
             await self.aconnect()
 
 
@@ -115,6 +129,7 @@ class SenzaSocket:
     # ------------------------------------
 
     async def receive_text(self) -> str:
+        depth:int = 1
         try:
             assert len(self._messages)
         except AssertionError:
@@ -126,7 +141,18 @@ class SenzaSocket:
         except AssertionError:
             return "type error"
         except IndexError as err:
-            await sleep(0.05)
+            if depth < 100:
+                await sleep(0.005)
+            if depth > 100:
+                await sleep(0.01)
+            if depth > 350:
+                await sleep(0.04)
+            if depth > 600:
+                await sleep(0.1)
+            if depth > 900:
+                await sleep(0.5)
+            if depth == self._recurse_limit:
+                return ""
             return await self.receive_text()
 
 
@@ -140,6 +166,7 @@ class SenzaSocket:
     # ----------------------------------
 
     async def receive_json(self) -> list[Any] | dict[Any, Any] | None:
+        depth:int = 1
         try:
             assert len(self._messages)
         except AssertionError:
@@ -153,7 +180,18 @@ class SenzaSocket:
         except AssertionError:
             print(f"type error {type(self._messages[-1])}")
         except IndexError as err:
-            await sleep(0.05)
+            if depth < 100:
+                await sleep(0.005)
+            if depth > 100:
+                await sleep(0.01)
+            if depth > 350:
+                await sleep(0.04)
+            if depth > 600:
+                await sleep(0.1)
+            if depth > 900:
+                await sleep(0.5)
+            if depth == self._recurse_limit:
+                return {}
             return await self.receive_json()
         except Exception as err:
             print(err)
@@ -169,6 +207,7 @@ class SenzaSocket:
     # ---
 
     async def receive_bytes(self) -> bytes | None:
+        depth:int = 1
         try:
             assert len(self._messages)
         except AssertionError:
@@ -181,7 +220,18 @@ class SenzaSocket:
             print("assert error", str(self._messages[-1]))
             print(f"type error, receive is {type(self._messages[-1])}")
         except IndexError as err:
-            await sleep(0.05)
+            if depth < 100:
+                await sleep(0.005)
+            if depth > 100:
+                await sleep(0.01)
+            if depth > 350:
+                await sleep(0.04)
+            if depth > 600:
+                await sleep(0.1)
+            if depth > 900:
+                await sleep(0.5)
+            if depth == self._recurse_limit:
+                return b""
             await self.receive_bytes()
 
     async def iter_bytes(self) -> AsyncIterator:
