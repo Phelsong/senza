@@ -13,3 +13,19 @@
 # 6.1.2024
 <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.6.1/core.css">
 <script defer type="module" src="https://pyscript.net/releases/2024.6.1/core.js"></script>
+
+# 6.2.2024
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.6.2/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.6.2/core.js"></script>
+
+# 7.1.2024
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.7.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.7.1/core.js"></script>
+
+# 8.1.2024
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.8.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.8.1/core.js"></script>
+
+# 8.2.2024
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.8.2/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.8.2/core.js"></script>

@@ -2,7 +2,7 @@ from pyscript import document
 from pyscript.web.elements import Element
 from senza.components.abase import Rest
 
-class Dropdown(Element):
+class Select(Element):
     """component builder for the card component."""
 
     _type = "select"
