@@ -1,6 +1,6 @@
 from pyscript import document
-from pyscript.web.elements import Element
-from senza.components.abase import Rest
+from senza.components.abase import Rest, Element
+
 
 class Select(Element):
     """component builder for the card component."""

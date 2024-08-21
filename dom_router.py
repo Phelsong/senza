@@ -4,7 +4,7 @@
 from typing import Callable
 
 # libs
-from pyscript.web.elements import Element
+from pyscript.web import Element
 
 # imports
 from web.context import site
@@ -35,7 +35,7 @@ class DomRouter:
         del self._nav[route]
 
     async def nav(self, route: str) -> None:
-        site.body.html = ""
+        site.body.innerHTML = ""
         await self._nav[route](self.root)
 
 

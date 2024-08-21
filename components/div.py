@@ -1,6 +1,7 @@
 """Div wrapper"""
 
-from senza.components.abase import Rest
+from senza.components.abase import Rest, Element
+
 
 class Div(Rest):
     """Base component builder for an HTML button component.

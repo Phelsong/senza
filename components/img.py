@@ -1,7 +1,6 @@
 """base template"""
 
-from pyscript.web.elements import Element
-from senza.components import Rest
+from senza.components import Rest, Element
 
 
 class Img(Rest):
@@ -58,4 +57,4 @@ class Img(Rest):
         super().__init__(
             parent, id, class_list=class_list, inner_text=inner_text, visible=visible
         )
-        self._js.setAttribute("src", src)
+        self.setAttribute("src", src)

@@ -1,6 +1,8 @@
 """base template"""
-from pyscript.web.elements import Element
+
+from pyscript.web import Element
 from senza.components.abase import Rest
+
 
 class H5(Rest):
     """Base component builder for a HTML component.

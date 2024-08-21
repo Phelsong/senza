@@ -1,6 +1,6 @@
 """base template"""
-from pyscript.web.elements import Element
-from senza.components.abase import Rest
+
+from senza.components.abase import Rest, Element
 
 
 class Span(Rest):

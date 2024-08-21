@@ -1,6 +1,5 @@
 from pyscript import document
-from pyscript.web.elements import Element
-from senza.components import Rest
+from senza.components import Rest, Element
 
 
 class SVG(Rest):
@@ -23,4 +22,4 @@ class SVG(Rest):
         svg_image: str = "",
     ):
         super().__init__(parent, id, class_list=class_list)
-        self.html = f"{svg_image}"
+        self.innerHTML = f"{svg_image}"

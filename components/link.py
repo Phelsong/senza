@@ -1,5 +1,6 @@
 """base template"""
-from pyscript.web.elements import Element
+
+from senza.components import Rest, Element
 
 
 class Link(Element):

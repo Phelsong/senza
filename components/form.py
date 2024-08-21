@@ -1,5 +1,5 @@
 from pyscript import document
-from pyscript.web.elements import Element
+from pyscript.web import Element
 from senza.components.abase import Rest
 
 class Form(Rest):

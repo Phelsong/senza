@@ -1,6 +1,7 @@
 """base template"""
-from pyscript.web.elements import Element
-from senza.components.abase import Rest
+
+from senza.components import Rest, Element
+
 
 class Label(Rest):
     """Base component builder for a HTML component.
