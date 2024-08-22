@@ -58,14 +58,14 @@ class Rest(Element):
         when
         """
         super().__init__()
-        self._parent: Element = parent
-        self._js = document.createElement(self._type)
+
+        self.parent: Element = parent
         self.id = id
         self.innerText = inner_text
         # -------------------
         # create element
         # ---
-        self.__create__(class_list)
+        self.__create__(parent, class_list)
         # after create
         self.visible = visible
         # ------------------
@@ -80,15 +80,16 @@ class Rest(Element):
     @visible.setter
     def visible(self, val: bool) -> None:
         """Set the visibility of the element."""
-        if val is True:
-            page[f"#{self.id}"][0].remove_class("senza-hidden")
-        else:
-            page[f"#{self.id}"][0].add_class("senza-hidden")
+        self.classes.toggle("senza-hidden")
+        # if val is True:
+        #     page[f"#{self.id}"][0].remove_class("senza-hidden")
+        # else:
+        #     page[f"#{self.id}"][0].add_class("senza-hidden")
         self._visible = val
 
-    def __create__(self, class_list: set):
+    def __create__(self, parent: Element, class_list: set):
         try:
-            self._parent.append(self)
+            parent.append(self)
             cl = self._class_list.union(class_list)
             assert len(cl) > 0
             for x in cl:
