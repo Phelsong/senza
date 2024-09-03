@@ -26,6 +26,7 @@ class Rest(Element):
         *,
         class_list: set = set(),
         inner_text: str = "",
+        inner_html: str = "",
         visible: bool = True,
     ):
         """
@@ -61,6 +62,7 @@ class Rest(Element):
 
         self.parent: Element = parent
         self.id = id
+        self.innerHtml = f"{inner_html}"
         self.innerText = inner_text
         # -------------------
         # create element
