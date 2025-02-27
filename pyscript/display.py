@@ -5,7 +5,7 @@ import re
 
 from pyscript.magic_js import current_target, document, window
 
-_MIME_METHODS = {
+_MIME_METHODS = {Preview
     "savefig": "image/png",
     "_repr_javascript_": "application/javascript",
     "_repr_json_": "application/json",

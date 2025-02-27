@@ -29,3 +29,43 @@
 # 8.2.2024
 <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.8.2/core.css">
 <script defer type="module" src="https://pyscript.net/releases/2024.8.2/core.js"></script>
+
+# 2024.9.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.9.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.9.1/core.js"></script>
+    
+# 2024.9.2
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.9.2/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.9.2/core.js"></script>
+
+# 2024.10.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.10.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.10.1/core.js"></script>
+
+# 2024.10.2
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.10.2/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.10.2/core.js"></script>
+
+# 2024.11.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
+
+# 2024.11.2
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2024.11.2/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2024.11.2/core.js"></script>
+
+# 2025.2.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.2.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
+
+# 2025.2.2
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.2.2/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.2.2/core.js"></script>
+
+# 2025.2.3
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.2.3/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.2.3/core.js"></script>
+
+# 2025.2.4
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.2.4/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.2.4/core.js"></script>
