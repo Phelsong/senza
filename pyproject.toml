@@ -18,3 +18,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 start = 'main:server.run'
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.pypi-dependencies]
+senza = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+start = "python main.py"
