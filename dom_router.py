@@ -7,13 +7,13 @@ from typing import Callable, Any
 from pyscript.web import Element
 
 # imports
-from web.context import site
+from senza.context import site
 
 
 class DomRouter:
     def __init__(self, root: Element) -> None:
         self.root: Element = root
-        self._nav: dict[str, Callable[[Element], Any]] = {}
+        self._nav: dict[str, Callable[[Element], Element | Any]] = {}
         self._routes: set[str] = set()
 
     @property
@@ -21,8 +21,9 @@ class DomRouter:
         return self._routes
 
     async def add(
-        self, func: Callable[[Element], Any], route: str = "{/func.__name__}"
+        self, func: Callable[[Element], Element | Any], route: str = "{/func.__name__}"
     ) -> None:
+        """default routes to the name of the function"""
         #
         if route == "{/func.__name__}":
             route = f"/{func.__name__}"

@@ -19,9 +19,10 @@
 # P = ensure_future(py_import("senza/components/ptag.py"))
 
 ##
-from pyscript.web import Element # convience re-export
-from senza.components.abase import Rest
-from senza.components.div import Div
+from pyscript.web import Element  # convience re-export
+from senza.components.abase import Rest, Rest as Div
+
+# from senza.components.div import Div
 from senza.components.anchor import A
 from senza.components.button import Button
 

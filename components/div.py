@@ -1,10 +1,13 @@
 """Div wrapper"""
 
-from senza.components.abase import Rest, Element
+# from stubs.pyscript import document
+# from stubs.pyweb.pydom import Element
+from pyscript import document
+from pyscript.web import Element, ContainerElement
 
 
-class Div(Rest):
-    """Base component builder for an HTML button component.
+class Div(Element):
+    """Base component builder for a HTML component.
     _type: str
     _class_list: set
     _parent: pydom.Element
@@ -66,8 +69,32 @@ class Div(Rest):
         # ---
         self.__create__(parent, class_list)
         # after create
-        self.visible    def __init__(
-             self,
-             parent: Element,
-             id: str = "",
-             *,= visible
+        self.visible = visible
+        # ------------------
+
+        # -------------------------------------------------------------------------
+
+    @property
+    def visible(self) -> bool:
+        """Get or set the visibility of the element."""
+        return self._visible
+
+    @visible.setter
+    def visible(self, val: bool) -> None:
+        """Set the visibility of the element."""
+        self.classes.toggle("senza-hidden")
+        # if val is True:
+        #     page[f"#{self.id}"][0].remove_class("senza-hidden")
+        # else:
+        #     page[f"#{self.id}"][0].add_class("senza-hidden")
+        self._visible = val
+
+    def __create__(self, parent: Element, class_list: set):
+        try:
+            parent.append(self)
+            cl = self._class_list.union(class_list)
+            assert len(cl) > 0
+            for x in cl:
+                self.classes.add(x)
+        except AssertionError:
+            return
