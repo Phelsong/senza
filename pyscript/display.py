@@ -4,8 +4,9 @@ import io
 import re
 
 from pyscript.magic_js import current_target, document, window
+from pyscript.ffi import is_none
 
-_MIME_METHODS = {Preview
+_MIME_METHODS = {
     "savefig": "image/png",
     "_repr_javascript_": "application/javascript",
     "_repr_json_": "application/json",
@@ -73,14 +74,14 @@ def _eval_formatter(obj, print_method):
     """
     if print_method == "__repr__":
         return repr(obj)
-    elif hasattr(obj, print_method):
+    if hasattr(obj, print_method):
         if print_method == "savefig":
             buf = io.BytesIO()
             obj.savefig(buf, format="png")
             buf.seek(0)
             return base64.b64encode(buf.read()).decode("utf-8")
         return getattr(obj, print_method)()
-    elif print_method == "_repr_mimebundle_":
+    if print_method == "_repr_mimebundle_":
         return {}, {}
     return None
 
@@ -105,13 +106,13 @@ def _format_mime(obj):
         else:
             output = _eval_formatter(obj, method)
 
-        if output is None:
+        if is_none(output):
             continue
-        elif mime_type not in _MIME_RENDERERS:
+        if mime_type not in _MIME_RENDERERS:
             not_available.append(mime_type)
             continue
         break
-    if output is None:
+    if is_none(output):
         if not_available:
             window.console.warn(
                 f"Rendered object requested unavailable MIME renderers: {not_available}"
@@ -135,7 +136,7 @@ def _write(element, value, append=False):
         element.append(out_element)
     else:
         out_element = element.lastElementChild
-        if out_element is None:
+        if is_none(out_element):
             out_element = element
 
     if mime_type in ("application/javascript", "text/html"):
@@ -146,12 +147,14 @@ def _write(element, value, append=False):
 
 
 def display(*values, target=None, append=True):
-    if target is None:
+    if is_none(target):
         target = current_target()
     elif not isinstance(target, str):
-        raise TypeError(f"target must be str or None, not {target.__class__.__name__}")
+        msg = f"target must be str or None, not {target.__class__.__name__}"
+        raise TypeError(msg)
     elif target == "":
-        raise ValueError("Cannot have an empty target")
+        msg = "Cannot have an empty target"
+        raise ValueError(msg)
     elif target.startswith("#"):
         # note: here target is str and not None!
         # align with @when behavior
@@ -160,10 +163,9 @@ def display(*values, target=None, append=True):
     element = document.getElementById(target)
 
     # If target cannot be found on the page, a ValueError is raised
-    if element is None:
-        raise ValueError(
-            f"Invalid selector with id={target}. Cannot be found in the page."
-        )
+    if is_none(element):
+        msg = f"Invalid selector with id={target}. Cannot be found in the page."
+        raise ValueError(msg)
 
     # if element is a <script type="py">, it has a 'target' attribute which
     # points to the visual element holding the displayed values. In that case,

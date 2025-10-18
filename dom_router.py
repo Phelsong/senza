@@ -1,7 +1,7 @@
 """router"""
 
 # from typing_extensions import dict_keys
-from typing import Callable
+from typing import Callable, Any
 
 # libs
 from pyscript.web import Element
@@ -13,14 +13,16 @@ from web.context import site
 class DomRouter:
     def __init__(self, root: Element) -> None:
         self.root: Element = root
-        self._nav: dict[str, Callable] = {}
+        self._nav: dict[str, Callable[[Element], Any]] = {}
         self._routes: set[str] = set()
 
     @property
     async def routes(self) -> set[str]:
         return self._routes
 
-    async def add(self, func: Callable, route: str = "{/func.__name__}") -> None:
+    async def add(
+        self, func: Callable[[Element], Any], route: str = "{/func.__name__}"
+    ) -> None:
         #
         if route == "{/func.__name__}":
             route = f"/{func.__name__}"

@@ -1,5 +1,5 @@
-from pyodide.ffi import to_js
 from pyscript import window
+from pyscript.ffi import to_js
 
 
 class Device:
@@ -8,53 +8,45 @@ class Device:
     """
 
     def __init__(self, device):
-        self._js = device
+        self._dom_element = device
 
     @property
     def id(self):
-        return self._js.deviceId
+        return self._dom_element.deviceId
 
     @property
     def group(self):
-        return self._js.groupId
+        return self._dom_element.groupId
 
     @property
     def kind(self):
-        return self._js.kind
+        return self._dom_element.kind
 
     @property
     def label(self):
-        return self._js.label
+        return self._dom_element.label
 
     def __getitem__(self, key):
         return getattr(self, key)
 
     @classmethod
     async def load(cls, audio=False, video=True):
-        """Load the device stream."""
-        options = window.Object.new()
-        options.audio = audio
+        """
+        Load the device stream.
+        """
+        options = {}
+        options["audio"] = audio
         if isinstance(video, bool):
-            options.video = video
+            options["video"] = video
         else:
-            # TODO: Think this can be simplified but need to check it on the pyodide side
-
-            # TODO: this is pyodide specific. shouldn't be!
-            options.video = window.Object.new()
+            options["video"] = {}
             for k in video:
-                setattr(
-                    options.video,
-                    k,
-                    to_js(video[k], dict_converter=window.Object.fromEntries),
-                )
-
-        stream = await window.navigator.mediaDevices.getUserMedia(options)
-        return stream
+                options["video"][k] = video[k]
+        return await window.navigator.mediaDevices.getUserMedia(to_js(options))
 
     async def get_stream(self):
         key = self.kind.replace("input", "").replace("output", "")
         options = {key: {"deviceId": {"exact": self.id}}}
-
         return await self.load(**options)
 
 

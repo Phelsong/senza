@@ -1,4 +1,5 @@
 """Div wrapper"""
+
 from pyscript import document
 from pyscript.web.elements import Element
 

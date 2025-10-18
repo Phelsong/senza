@@ -5,8 +5,9 @@ import tarfile
 from utils import project_dir, package_dir
 
 
-version = "0.27.3"
+version = "0.28.3"
 version_entry = f"pyodide-{version}.tar.bz2"
+
 
 def sync_pyodide():
     print(

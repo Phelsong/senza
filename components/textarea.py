@@ -1,4 +1,5 @@
 """base template"""
+
 from pyscript.web.elements import Element
 from senza.components.abase import Rest
 

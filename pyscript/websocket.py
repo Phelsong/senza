@@ -1,9 +1,28 @@
 import js
-from pyscript.util import as_bytearray
+from pyscript.ffi import create_proxy
+from pyscript.util import as_bytearray, is_awaitable
 
 code = "code"
 protocols = "protocols"
 reason = "reason"
+methods = ["onclose", "onerror", "onmessage", "onopen"]
+
+
+def add_listener(socket, onevent, listener):
+    p = create_proxy(listener)
+
+    if is_awaitable(listener):
+
+        async def wrapper(e):
+            await p(EventMessage(e))
+
+        m = wrapper
+
+    else:
+        m = lambda e: p(EventMessage(e))
+
+    # Pyodide fails at setting socket[onevent] directly
+    setattr(socket, onevent, m)
 
 
 class EventMessage:
@@ -22,7 +41,7 @@ class EventMessage:
         return value
 
 
-class WebSocket(object):
+class WebSocket:
     CONNECTING = 0
     OPEN = 1
     CLOSING = 2
@@ -34,20 +53,22 @@ class WebSocket(object):
             socket = js.WebSocket.new(url, kw[protocols])
         else:
             socket = js.WebSocket.new(url)
+
+        socket.binaryType = "arraybuffer"
         object.__setattr__(self, "_ws", socket)
 
-        for t in ["onclose", "onerror", "onmessage", "onopen"]:
+        for t in methods:
             if t in kw:
-                socket[t] = kw[t]
+                add_listener(socket, t, kw[t])
 
     def __getattr__(self, attr):
         return getattr(self._ws, attr)
 
     def __setattr__(self, attr, value):
-        if attr == "onmessage":
-            self._ws[attr] = lambda e: value(EventMessage(e))
+        if attr in methods:
+            add_listener(self._ws, attr, value)
         else:
-            self._ws[attr] = value
+            setattr(self._ws, attr, value)
 
     def close(self, **kw):
         if code in kw and reason in kw:

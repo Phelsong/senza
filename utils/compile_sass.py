@@ -1,7 +1,13 @@
 # lib
 import os
-#imports
+
+# imports
 from utils import project_dir
+
 
 def compile_sass():
     os.system(f"sass {project_dir}/sass/index.scss {project_dir}/public/index.css")
+
+
+if __name__ == "__main__":
+    compile_sass()

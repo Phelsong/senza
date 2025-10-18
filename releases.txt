@@ -33,7 +33,7 @@
 # 2024.9.1
 <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.9.1/core.css">
 <script defer type="module" src="https://pyscript.net/releases/2024.9.1/core.js"></script>
-    
+
 # 2024.9.2
 <link defer rel="stylesheet" href="https://pyscript.net/releases/2024.9.2/core.css">
 <script defer type="module" src="https://pyscript.net/releases/2024.9.2/core.js"></script>
@@ -69,3 +69,23 @@
 # 2025.2.4
 <link defer rel="stylesheet" href="https://pyscript.net/releases/2025.2.4/core.css">
 <script defer type="module" src="https://pyscript.net/releases/2025.2.4/core.js"></script>
+
+# 2025.3.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+
+# 2025.5.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.5.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.5.1/core.js"></script>
+
+# 2025.7.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.7.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.7.1/core.js"></script>
+
+# 2025.7.3
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.7.3/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.7.3/core.js"></script>
+
+# 2025.8.1
+<link defer rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+<script defer type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>

@@ -10,6 +10,11 @@ RUNNING_IN_WORKER = not hasattr(globalThis, "document")
 
 config = json.loads(globalThis.JSON.stringify(_config))
 
+if "MicroPython" in sys.version:
+    config["type"] = "mpy"
+else:
+    config["type"] = "py"
+
 
 # allow `from pyscript.js_modules.xxx import yyy`
 class JSModule:
@@ -20,6 +25,7 @@ class JSModule:
         # avoid pyodide looking for non existent fields
         if not field.startswith("_"):
             return getattr(getattr(js_modules, self.name), field)
+        return None
 
 
 # generate N modules in the system that will proxy the real value
@@ -36,7 +42,6 @@ if RUNNING_IN_WORKER:
     )
 
     try:
-        globalThis.SharedArrayBuffer.new(4)
         import js
 
         window = polyscript.xworker.window
@@ -47,17 +52,11 @@ if RUNNING_IN_WORKER:
             "return (...urls) => Promise.all(urls.map((url) => import(url)))"
         )()
     except:
-        globalThis.console.debug("SharedArrayBuffer is not available")
-        # in this scenario none of the utilities would work
-        # as expected so we better export these as NotSupported
-        window = NotSupported(
-            "pyscript.window",
-            "pyscript.window in workers works only via SharedArrayBuffer",
-        )
-        document = NotSupported(
-            "pyscript.document",
-            "pyscript.document in workers works only via SharedArrayBuffer",
-        )
+        message = "Unable to use `window` or `document` -> https://docs.pyscript.net/latest/faq/#sharedarraybuffer"
+        globalThis.console.warn(message)
+        window = NotSupported("pyscript.window", message)
+        document = NotSupported("pyscript.document", message)
+        js_import = None
 
     sync = polyscript.xworker.sync
 
@@ -68,7 +67,11 @@ if RUNNING_IN_WORKER:
 
 else:
     import _pyscript
-    from _pyscript import PyWorker, js_import
+    from _pyscript import PyWorker as _PyWorker, js_import
+    from pyscript.ffi import to_js
+
+    def PyWorker(url, **kw):
+        return _PyWorker(url, to_js(kw))
 
     window = globalThis
     document = globalThis.document

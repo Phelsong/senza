@@ -69,7 +69,11 @@ class Rest(Element):
         # ---
         self.__create__(parent, class_list)
         # after create
-        self.visible = visible
+        self.visible    def __init__(
+             self,
+             parent: Element,
+             id: str = "",
+             *,= visible
         # ------------------
 
         # -------------------------------------------------------------------------
