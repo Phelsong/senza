@@ -1,12 +1,22 @@
 # Senza
 
-A thin layer of conveniences on top of **pyScript** (2025.11+ / 2026.x),
+A thin layer of conveniences, management scripts, and core boilerplate on top of **pyScript** (2025.11+ / 2026.x),
 with as little re-invention of pyScript as possible.
 
-Three modules + dev utils:
+this repo is "senza-core", that could be used with any webserver.
+Any practical/dev work is done in https://github.com/Phelsong/senza-fastapi
+
+## Usage
+add senza to .gitignore
+dowload a release and unpack it your project root
+python ./senza/scripts/sync_senza.py
+
+(better setup on the todo)
+
+# What it does
 
 - `config.py` — pyscript app config utilities: modern `[files]` map sync
-  (`sync_files`), legacy `[[fetch]]` migration, the senza `{SENZA}`
+  (`sync_files`), the senza `{SENZA}`
   placeholder (browser modules served from `<app-root>/packages/senza`,
   populated by `senza/sync_senza.py`), TOML dump with round-trip
   verification, and the pyodide `interpreter` pin (`pyodide.version` at the app root)
