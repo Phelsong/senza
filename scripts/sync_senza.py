@@ -14,13 +14,20 @@ placeholder so they stay servable independently of any checkout:
 
 Modes:
 - default: pull the latest Phelsong/senza GitHub release (zipball), extract
-  the core modules into `packages/senza/`, and record the tag in
+  the core modules into `packages/senza/`, refresh the app's root `senza/`
+  directory from the same bundle, and record the tag in
   `<app-root>/senza.version` — that pin keeps subsequent pulls reproducible
 - `--pin <tag|latest>`: resolve and use a specific release (writing the pin)
 - `--from <dir>`: dev mode — no network, copy a senza checkout instead
+- `--skip-root`: refresh `packages/` only, leave the root `senza/` alone
+- `--refresh-scripts`: also let the release overwrite the local script suite
+  (default OFF — without it the running sync script can never be clobbered
+  by a release whose scripts are older, so the root refresh keeps working
+  across runs even before a newer release publishes this very script)
 
 CLI:
     python senza/scripts/sync_senza.py <app-root> [--pin <tag|latest>] [--from <dir>]
+                                        [--skip-root] [--refresh-scripts]
 """
 
 import io
@@ -29,6 +36,7 @@ import zipfile
 from pathlib import Path
 from typing import Optional, Union
 import urllib.request
+import urllib.error
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -44,6 +52,11 @@ FROM_PLACEHOLDER = "{FROM}"
 BROWSER_MODULES = ["router.py", "visibility.py"]
 
 SENZA_PIN_FILE = "senza.version"
+THIS_FILE = "scripts/sync_senza.py"
+
+_root_suffixes = frozenset({".py", ".md", ".toml", ".txt"})
+_root_files = frozenset({"LICENSE"})
+_root_dirs = frozenset({"scripts"})
 
 
 def _import_senza():
@@ -91,9 +104,23 @@ def resolve_tag(root: StrPath, want: Optional[str] = None) -> str:
     tags = upstream_tags()
     if want and want != "latest":
         if want not in tags:
-            raise ValueError(f"{want} is not a published {REPO} release; available: {', '.join(tags[:5])}")
+            raise ValueError(
+                f"{want} is not a published {REPO} release; available: {', '.join(tags[:5])}"
+            )
         return want
     return pinned(root) or tags[0]
+
+
+def _wants(rel: str) -> bool:
+    rel = rel.strip("/")
+    if rel.startswith("."):
+        return False
+    if "/" in rel:
+        first, _, rest = rel.partition("/")
+        return first in _root_dirs and bool(rest)
+    if Path(rel).suffix in _root_suffixes:
+        return True
+    return Path(rel).name in _root_files
 
 
 def pull(
@@ -101,13 +128,17 @@ def pull(
     tag: str,
     *,
     record: bool = True,
+    rel_content: Optional[dict[str, bytes]] = None,
 ) -> dict[str, str]:
-    """Download the release zipball, extract core modules into
-    `packages/senza/` (top-level library files only), and mark the version.
-    Returns `{name: dest}` for reporting."""
+    """Download the release zipball. Extract top-level library files into
+    `packages/senza/` (marked with the version). When `rel_content` is passed,
+    every non-dotfile release path is collected there for the caller (used
+    for the app-root senza refresh). Returns `{name: dest}`."""
     root = Path(root).resolve()
     target = root / SENZA_PACKAGES_DIR
     target.mkdir(parents=True, exist_ok=True)
+    if rel_content is None:
+        rel_content = {}
 
     request = urllib.request.Request(ZIPBALL_URL + tag, headers={"Accept": "application/zip"})
     with urllib.request.urlopen(request, timeout=60) as response:
@@ -119,19 +150,64 @@ def pull(
             if entry.endswith("/"):
                 continue
             first, _, rest = entry.partition("/")
-            if not first or not rest or "/" in rest or rest.startswith("."):
-                continue  # subdirectories and dotfiles stay in the repo
+            if not first or not rest or rest.startswith("."):
+                continue
             member = bundle.read(entry)
-            dest = target / rest
-            dest.write_bytes(member)
-            copied[rest] = dest.as_posix()
+            rel_content[rest] = member
+            if "/" not in rest:
+                dest = target / rest
+                dest.write_bytes(member)
+                copied[rest] = dest.as_posix()
 
     (target / ".version").write_text(f"{tag}\n")
     if record or pinned(root):
         set_pinned(tag, root)
     return copied
 
-# ------------------------------------------------------------ packages sync
+
+def update_root_dir(
+    root: StrPath,
+    rel_content: dict[str, bytes],
+    *,
+    refresh_scripts: bool = False,
+    self_path: str = THIS_FILE,
+) -> dict[str, str]:
+    """Write the release's core files into `<app-root>/senza/` (the downstream
+    app's local senza copy — a workspace, submodule checkout, or fresh dir).
+    Only updates paths present in the release; nothing is deleted.
+
+    The RUNNING script (`scripts/sync_senza.py`) is never overwritten unless
+    `refresh_scripts` is set — a release whose script is older than the one
+    running would otherwise silently regress the root-refresh feature.
+
+    Returns `{rel: dest}`."""
+    root = Path(root)
+    senza_root = root / "senza"
+    senza_root.mkdir(parents=True, exist_ok=True)
+
+    updated: dict[str, str] = {}
+    for rel, data in rel_content.items():
+        key = rel.strip("/")
+        if not _wants(key):
+            continue
+        if key == self_path and not refresh_scripts:
+            continue  # never clobber the running script by default
+        dest = senza_root / key
+        if dest.is_file() and dest.read_bytes() == data:
+            continue  # unchanged
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(data)
+        updated[key] = dest.as_posix()
+
+    if updated:
+        if (senza_root / ".git").exists():
+            print(
+                f"root senza updated ({len(updated)} files) — senza/ is a git "
+                "submodule or checkout; commit these on the senza side"
+            )
+        else:
+            print(f"root senza updated ({len(updated)} files)")
+    return updated
 
 
 def sync(
@@ -140,11 +216,15 @@ def sync(
     pin: Optional[str] = None,
     senza_dir: Optional[StrPath] = None,
     config_path: Optional[StrPath] = None,
+    skip_root: bool = False,
+    refresh_scripts: bool = False,
 ) -> dict[str, dict[str, str]]:
     """Refresh `packages/senza` (from a release by default, a checkout with
-    `--from`) and migrate the config's senza entries under `{SENZA}`.
+    `--from`), refresh the app's root `senza/`, and migrate the config's
+    senza entries under `{SENZA}`.
 
-    Returns `{"source": mode, "copied": {name: dest}, "config": {src: dest}}`.
+    Returns `{"source": mode, "copied": {name: dest}, "root": {rel: dest},
+    "config": {src: dest}}`.
     """
     _import_senza()
     from senza.config import load_config, write_config
@@ -153,6 +233,7 @@ def sync(
     config_path = Path(config_path).resolve() if config_path else root / "web" / "config.toml"
 
     copied: dict[str, str] = {}
+    root_updated: dict[str, str] = {}
     if senza_dir is not None:  # dev mode: copy from a local checkout
         senza_root = Path(senza_dir).resolve()
         target = root / SENZA_PACKAGES_DIR
@@ -167,8 +248,13 @@ def sync(
         source_mode = f"checkout {senza_root}"
     else:
         tag = resolve_tag(root, pin)
-        copied = pull(root, tag)
+        rel_content: dict[str, bytes] = {}
+        copied = pull(root, tag, rel_content=rel_content)
         source_mode = f"release {tag}"
+        if not skip_root:
+            root_updated = update_root_dir(
+                root, rel_content, refresh_scripts=refresh_scripts
+            ) or {}
 
     config: dict[str, str] = {}
     if config_path.is_file():
@@ -192,7 +278,9 @@ def sync(
         )
         if moved or needs_def:
             # definitions precede their uses (pyscript's files templating)
-            new_map: dict[str, str] = {SENZA_PLACEHOLDER: files_map.get(SENZA_PLACEHOLDER, SENZA_FROM_URL)}
+            new_map: dict[str, str] = {
+                SENZA_PLACEHOLDER: files_map.get(SENZA_PLACEHOLDER, SENZA_FROM_URL)
+            }
             for src, dest in files_map.items():
                 new_map.setdefault(src, dest)
             new_map[FROM_PLACEHOLDER] = files_map.get(FROM_PLACEHOLDER, "/pyscript-source")
@@ -202,7 +290,7 @@ def sync(
             write_config(cfg, config_path)
             config = moved
 
-    return {"source": source_mode, "copied": copied, "config": config}
+    return {"source": source_mode, "copied": copied, "root": root_updated, "config": config}
 
 
 def main() -> None:
@@ -210,18 +298,29 @@ def main() -> None:
     root = args[0] if args and not args[0].startswith("--") else "."
     pin: Optional[str] = None
     senza_dir: Optional[str] = None
+    skip_root = "--skip-root" in args
+    refresh_scripts = "--refresh-scripts" in args
     if "--from" in args:
         i = args.index("--from")
         senza_dir = args[i + 1]
-        del args[i : i+2]
+        del args[i : i + 2]
     if "--pin" in args:
         i = args.index("--pin")
         pin = args[i + 1]
-        del args[i : i+2]
-    report = sync(root, pin=pin, senza_dir=senza_dir)
+        del args[i : i + 2]
+
+    report = sync(
+        root,
+        pin=pin,
+        senza_dir=senza_dir,
+        skip_root=skip_root,
+        refresh_scripts=refresh_scripts,
+    )
     print(f"senza source: {report['source']}")
     for name, dest in report["copied"].items():
         print(f"  {name} -> {dest}")
+    for rel, dest in report.get("root", {}).items():
+        print(f"root senza: {rel} -> {dest}")
     for src, dest in report["config"].items():
         print(f'config: {src} = "{dest}"')
 
